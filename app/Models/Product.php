@@ -32,6 +32,7 @@ class Product extends Model
         'brand',
         'qty',
         'alert_stock',
+        'code',
         'barcode',
         'qrcode',
         'image',
@@ -128,7 +129,7 @@ class Product extends Model
     {
         $term = "%$term%";
         return $query->where(function($query) use ($term) {
-            $query->where('uuid', 'like', $term);
+            $query->where('title', 'like', $term);
         });
     }
 

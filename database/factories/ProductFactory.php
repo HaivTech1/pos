@@ -21,6 +21,7 @@ class ProductFactory extends Factory
         return [
             'title'                 => $title,
             'slug'                  => Str::slug($title . '-' . now()->getPreciseTimestamp(4)),
+            'code'                  => rand(1000, 5000),
             'price'                 => $this->faker->numberBetween($min = 1500, $max = 6000),
             'discount'                 => $this->faker->numberBetween($min = 300, $max = 600),
             'qty'                     => rand(1, 10),

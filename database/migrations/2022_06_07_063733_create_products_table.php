@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->double('discount')->nullable();
             $table->integer('qty')->default(1);
             $table->integer('alert_stock')->default('100');
+            $table->string('code')->nullable();
             $table->string('qrcode')->nullable();
             $table->text('barcode')->nullable();
             $table->longText('image')->nullable();

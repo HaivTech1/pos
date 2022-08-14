@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use PDF;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 
@@ -15,17 +17,20 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('ecommerce.order.index');
+        return view('cashier.order.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
+    public function pdfview(Request $request)
     {
-        return view('ecommerce.order.show', compact(['order']));
+        $reports = Order::where('created_at', '>=', date('Y-m-d').' 00:00:00')->get();
+        view()->share('reports', $reports);
+
+        if ($request->has('download')) {
+            $pdf = PDF::loadView('cashier.report.pdfview');
+            return $pdf->download('report.pdf');
+        }
+
+
+        return view('cashier.report.pdfview');
     }
 }

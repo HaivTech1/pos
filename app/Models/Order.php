@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Status;
+use App\Traits\HasUuid;
 use App\Traits\HasAuthor;
 use App\Models\OrderDetail;
 use App\Traits\HasTimestamps;
@@ -16,9 +17,20 @@ class Order extends Model
     use HasFactory;
     use HasTimestamps;
     use HasAuthor;
+    use HasUuid;
 
     const TABLE = 'orders';
     protected $table = self::TABLE;
+
+    protected $fillable = [
+        'uuid',
+        'name',
+        'phone',
+        'payment_method',
+        'payment',
+        'balance',
+        'author_id'
+    ];
 
     protected $primaryKey = 'uuid';
 
@@ -26,83 +38,24 @@ class Order extends Model
 
     public $incrementing = false;
 
-    protected $fillable = [
-        'uuid',
-        'orderItems',
-        'shippingAddress',
-        'total',
-        'taxPrice',
-        'totalPrice',
-        'shippingPrice',
-        'paymentMethod',
-        'isPaid',
-        'isDelivered',
-        'paidAt',
-        'deliveredAt',
-        'paymentResult',
-        'author_id'
-    ];
-
-
-    protected $casts = [
-
-        'isPaid'               => 'boolean',
-        'isDelivered'          => 'boolean',
-    ];
-    
     public function id(): string
     {
         return $this->uuid;
     }
 
-    public function items(): array
+    public function name(): string
     {
-        return json_decode($this->orderItems, true);
+        return $this->name;
     }
 
-    public function shippingAddress(): array
+    public function phone(): string
     {
-        return json_decode($this->shippingAddress, true);
-    }
-
-    public function tax(): string
-    {
-        return $this->taxPrice;
-    }
-
-    public function total(): string
-    {
-        return $this->total;
-    }
-
-    public function grandTotal(): string
-    {
-        return $this->totalPrice;
-    }
-
-    public function shipping(): string
-    {
-        return $this->shippingPrice;
-    }
-
-    public function payment(): string
-    {
-        return $this->paymentMethod;
+        return $this->phone;
     }
 
     public function createdAt(): string
     {
         return $this->created_at->format('d F Y');
-    }
-
-    public function paid(): bool
-    {
-        return $this->isPaid;
-    }
-
-    public function delivered(): bool
-    {
-        return $this->isDelivered;
     }
 
     public function scopeLoadLatest(Builder $query, $count = 4)
@@ -117,5 +70,10 @@ class Order extends Model
         return $query->where(function($query) use ($term) {
             $query->where('uuid', 'like', $term);
         });
+    }
+
+    public function orderdetail()
+    {
+        return $this->hasMany(Orderdetail::class);
     }
 }
