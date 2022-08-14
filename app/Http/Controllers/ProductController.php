@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Product;
 use App\Jobs\CreateProduct;
 use App\Jobs\UpdateProduct;
@@ -19,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('ecommerce.product.index');
+        return view('admin.product.index');
     }
 
     /**
@@ -30,7 +31,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = ProductCategory::all()->pluck('name', 'id');
-        return view('ecommerce.product.create', compact(['categories']));
+        $brands = Brand::all()->pluck('title', 'id');
+        return view('admin.product.create', compact(['categories', 'brands']));
     }
 
     /**
@@ -62,7 +64,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('ecommerce.product.show', compact(['product']));
+        return view('admin.product.show', compact(['product']));
     }
 
     /**
@@ -74,7 +76,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = ProductCategory::all()->pluck('name', 'id');
-        return view('ecommerce.product.edit', compact(['product', 'categories']));
+        return view('admin.product.edit', compact(['product', 'categories']));
     }
 
     /**

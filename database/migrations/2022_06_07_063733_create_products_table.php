@@ -16,7 +16,6 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->uuid('uuid')->primary()->unique();
             $table->string('title');
-            $table->string('brand')->nullable();
             $table->string('slug')->nullable();
             $table->double('price');
             $table->double('discount')->nullable();
@@ -29,13 +28,14 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('status')->default(0);
             $table->foreignId('product_category_id')->constrained('product_categories')->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.  
      *
      * @return void
      */

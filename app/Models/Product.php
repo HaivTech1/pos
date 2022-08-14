@@ -29,7 +29,6 @@ class Product extends Model
         'slug',
         'price',
         'discount',
-        'brand',
         'qty',
         'alert_stock',
         'code',
@@ -38,6 +37,7 @@ class Product extends Model
         'image',
         'description',
         'product_category_id',
+        'brand_id',
         'isAvailable',
         'isVerified',
         'author_id'
@@ -58,6 +58,11 @@ class Product extends Model
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
     public function id(): string
     {
         return (string) $this->uuid;
@@ -76,11 +81,6 @@ class Product extends Model
     public function discount(): ?string
     {
         return $this->discount;
-    }
-
-    public function brand(): string
-    {
-        return $this->brand;
     }
 
     public function quantity(): string

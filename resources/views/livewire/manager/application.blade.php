@@ -133,36 +133,6 @@
                     <x-form.error for="order_invoice_alias" class="mt-2" />
                 </div>
 
-                <div class="col-sm-12 mt-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        {{-- cashier_setting --}}
-                        <div class="mt-3">
-                            <x-form.label for="cashier_setting" value="{{ __('Cashier Settings') }}" /><br />
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-bold font-semibold text-primary uppercase mr-2 pr-4">Barcode</span>
-                                <input type="checkbox" id="switch1" switch="none" checked value="1"
-                                    wire:model.defer="app.cashier_setting" />
-                                <label for="switch1" data-on-label="On" data-off-label="Off"></label>
-                                <span class="text-bold font-semibold text-primary uppercase ml-2">Search</span>
-                            </div>
-                            <x-form.error for="cashier_setting" />
-                        </div>
-
-                        {{-- product_preview --}}
-                        <div class="mt-3">
-                            <x-form.label for="product_preview" value="{{ __('Product Preview') }}" /><br />
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-bold font-semibold text-primary uppercase mr-2 pr-4">Gallery</span>
-                                <input type="checkbox" id="switch2" switch="none" checked value="1"
-                                    wire:model.defer="app.product_preview" />
-                                <label for="switch2" data-on-label="On" data-off-label="Off"></label>
-                                <span class="text-bold font-semibold text-primary uppercase ml-2">Table</span>
-                            </div>
-                            <x-form.error for="product_preview" />
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Site description -->
                 <div class="col-sm-12 mt-3">
 

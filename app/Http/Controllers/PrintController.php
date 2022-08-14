@@ -3,21 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Mike42\Escpos\Printer;
+use Rawilk\Printing\Facades\Printing;
+use Rawilk\Printing\Receipts\ReceiptPrinter;
 
 class PrintController extends Controller
 {
     public function test()
     {
-        try {
-            $connector = new FilePrintConnector("php://stdout");
-            $printer = new Printer($connector);
-            $printer -> text("Hello World!\n");
-            $printer -> cut();
-            $printer -> close();
-        } catch (\Exception $e) {
-            echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+        $receipt = (string) (new ReceiptPrinter)
+        ->centerAlign()
+        ->text('My heading')
+        ->leftAlign()
+        ->line()
+        ->twoColumnText('Item 1', '2.00')
+        ->twoColumnText('Item 2', '4.00')
+        ->feed(2)
+        ->centerAlign()
+        ->barcode('1234')
+        ->cut();
+
+        // Now send the string to your receipt printer
+        Printing::newPrintTask()
+        ->printer($receiptPrinterId)
+        ->content($text)
+        ->send();
         }
-    }
 }

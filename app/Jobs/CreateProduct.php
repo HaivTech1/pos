@@ -2,16 +2,13 @@
 
 namespace App\Jobs;
 
+use Picqer;
 use App\Models\User;
 use App\Models\Product;
-use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Auth;
+use App\Services\SaveCodeService;
 use App\Http\Requests\ProductRequest;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class CreateProduct implements ShouldQueue
 {
@@ -72,13 +69,20 @@ class CreateProduct implements ShouldQueue
             'price'                 => $this->price,
             'quantity'              => $this->quantity,
             'discount'              => $this->discount,
-            'brand'                 => $this->brand,
+            'brand_id'              => $this->brand,
             'description'           => $this->description,
-            'product_category_id'  => $this->category,
+            'product_category_id'   => $this->category,
         ]);
 
-        $product->authoredBy($this->author);
+        $product->code = SaveCodeService::IDGenerator(new Product ,$product, 'code', 4, 'prd');
 
+        $generator = new Picqer\Barcode\BarcodeGeneratorJPG();
+        
+        file_put_contents('products/barcodes/' . $product->code . '.jpg',
+            $barcodes = $generator->getBarcode($product->code, $generator::TYPE_CODE_128, 3, 50)
+        );
+
+        $product->barcode = $product->code . '.jpg';
 
         if($this->image)
         {
@@ -96,7 +100,7 @@ class CreateProduct implements ShouldQueue
         }
 
         $product->image = json_encode($Imgdata);
-
+        $product->authoredBy($this->author);
         $product->save();
 
         return $product;

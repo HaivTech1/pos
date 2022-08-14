@@ -48,8 +48,12 @@
 
                                 <div class="mb-3">
                                     <x-form.label for="brand" value="{{ __('Product Brand') }}" />
-                                    <x-form.input id="brand" class="block w-full mt-1" type="text" name="brand"
-                                        :value="old('brand')" id="brand" placeholder="Product brand" autofocus />
+                                    <select class="form-control" name="brand">
+                                        <option>Select</option>
+                                        @foreach ($brands as $id => $brand)
+                                        <option value="{{ $id }}">{{ $brand }}</option>
+                                        @endforeach
+                                    </select>
                                     <x-form.error for="brand" />
                                 </div>
 

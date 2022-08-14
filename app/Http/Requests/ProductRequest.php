@@ -25,6 +25,7 @@ class ProductRequest extends FormRequest
             'image'                       => ['sometimes'],
             'description'                 => ['nullable'],
             'category'                      => ['required'],
+            'brand'                      => ['required'],
         ];
     }
 

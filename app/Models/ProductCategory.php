@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -43,5 +44,18 @@ class ProductCategory extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        return $query->where(function($query) use ($term) {
+            $query->where('name', 'like', $term);
+        });
+    }
+
+    public function scopeLoadLatest(Builder $query, $count = 4)
+    {
+        return $query->paginate($count);
     }
 }

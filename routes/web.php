@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ProductCategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,6 +40,14 @@ Route::middleware([
         Route::delete('members/{id}/{user_id}', [App\Http\Controllers\Teamwork\TeamMemberController::class, 'destroy'])->name('teams.members.destroy');
 
         Route::get('accept/{token}', [App\Http\Controllers\Teamwork\AuthController::class, 'acceptInvite'])->name('teams.accept_invite');
+    });
+
+    Route::group(['prefix' => 'category', 'as' => 'category.'], function () {
+        Route::get('/', [ProductCategoryController::class, 'index'])->name('index');
+    });
+
+    Route::group(['prefix' => 'brand', 'as' => 'brand.'], function () {
+        Route::get('/', [BrandController::class, 'index'])->name('index');
     });
 
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {

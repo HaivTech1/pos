@@ -24,9 +24,14 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-store"></i>
-                        <span key="t-ecommerce">Store</span>
+                        <span key="t-ecommerce">Store Management</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('brand.index') }}" key="t-add-product">Add Product Brand</a></li>
+                        <li><a href="{{ route('category.index') }}" key="t-add-product">Add Product Category</a></li>
+                        <li><a href="{{ route('category.index') }}" key="t-add-product">Add Suppliers</a></li>
+                        <li><a href="{{ route('category.index') }}" key="t-add-product">Add Incoming</a></li>
+                        <li><a href="{{ route('category.index') }}" key="t-add-product">Barcodes</a></li>
                         <li><a href="{{ route('product.create') }}" key="t-add-product">Add Product</a></li>
                         <li><a href="{{ route('product.index') }}" key="t-products">Products</a></li>
                     </ul>
@@ -36,7 +41,7 @@
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-store"></i>
-                        <span key="t-ecommerce">Cashier</span>
+                        <span key="t-ecommerce">Cashier Management</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('order.index') }}" key="t-add-product">Cashier</a></li>

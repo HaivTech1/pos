@@ -34,8 +34,6 @@ class Application extends Component
             'slogan'         => $this->app['slogan'],
             'motto'         => $this->app['motto'],
             'fax'         => $this->app['fax'],
-            'cashier_setting'         => $this->app['cashier_setting'],
-            'product_preview'         => $this->app['product_preview'],
             'address'         => $this->app['address'],
             'description'         => $this->app['description'],
             'order_invoice_alias'         => $this->app['order_invoice_alias'],

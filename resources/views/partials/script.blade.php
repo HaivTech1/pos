@@ -70,3 +70,4 @@ switch (type) {
 @endif
 </script>
 @stack('modals')
+<script src="{{ asset('js/alpine.js') }}"></script>
