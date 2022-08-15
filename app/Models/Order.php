@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Status;
 use App\Traits\HasUuid;
 use App\Traits\HasAuthor;
-use App\Models\OrderDetail;
 use App\Traits\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
@@ -29,6 +26,7 @@ class Order extends Model
         'payment_method',
         'payment',
         'balance',
+        'barcode',
         'author_id'
     ];
 
@@ -53,6 +51,26 @@ class Order extends Model
         return $this->phone;
     }
 
+    public function barcode(): string
+    {
+        return $this->barcode;
+    }
+
+    public function method(): string
+    {
+        return $this->payment_method;
+    }
+
+    public function payment(): string
+    {
+        return $this->payment;
+    }
+
+    public function balance(): string
+    {
+        return $this->balance;
+    }
+    
     public function createdAt(): string
     {
         return $this->created_at->format('d F Y');
@@ -74,6 +92,6 @@ class Order extends Model
 
     public function orderdetail()
     {
-        return $this->hasMany(Orderdetail::class);
+        return $this->hasMany(Orderdetail::class, 'order_uuid');
     }
 }

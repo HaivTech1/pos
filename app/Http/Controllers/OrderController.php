@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use PDF;
+use App\Models\Order;
+use App\Models\Orderdetail;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'staff']);
+    }
+
     public function index()
     {
-        return view('cashier.order.index');
+        $orders = Order::all();
+        $lastID = Orderdetail::max('order_uuid');
+        $order_receipt = Orderdetail::with(['order'])->where('order_uuid', $lastID)->get();
+        return view('cashier.order.index',['orders' => $orders, 'order_receipt' => $order_receipt]);
     }
 
     public function pdfview(Request $request)

@@ -76,7 +76,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row" style="width: 400px;">Product Brand</th>
-                                        <td>{{ $product->brand() }}</td>
+                                        <td>{{ $product->brand->title() }}</td>
                                     </tr>
                                     <tr>
                                         <th scope="row" style="width: 400px;">Product Category</th>

@@ -3,29 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers;
-use Rawilk\Printing\Facades\Printing;
-use Rawilk\Printing\Receipts\ReceiptPrinter;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 
 class PrintController extends Controller
 {
     public function test()
     {
-        $receipt = (string) (new ReceiptPrinter)
-        ->centerAlign()
-        ->text('My heading')
-        ->leftAlign()
-        ->line()
-        ->twoColumnText('Item 1', '2.00')
-        ->twoColumnText('Item 2', '4.00')
-        ->feed(2)
-        ->centerAlign()
-        ->barcode('1234')
-        ->cut();
-
-        // Now send the string to your receipt printer
-        Printing::newPrintTask()
-        ->printer($receiptPrinterId)
-        ->content($text)
-        ->send();
-        }
+        $connector = new NetworkPrintConnector("192,168,43,249", 9100);
+        $printer = new Printer($connector);
+        try {
+            $printer -> text("Hello World i am printing this page already!\n");
+            $printer -> cut();
+            $printer -> text("Hello World i am printing this page already!\n");
+            $printer -> cut();
+        } finally {
+        $printer -> close();
+}
+    }
 }

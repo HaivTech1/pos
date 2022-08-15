@@ -2,21 +2,15 @@
 
 namespace App\Providers;
 
-use App\Models\Post;
 use App\Models\User;
 use App\Models\Product;
-use App\Models\Property;
-use App\Models\PostCategory;
 use App\Events\BookingCreated;
-use App\Observers\PostObserver;
 use App\Observers\UserObserver;
 use App\Events\SendNewTaskEvent;
 use App\Observers\ProductObserver;
-use App\Observers\PropertyObserver;
 use Illuminate\Support\Facades\Event;
 use App\Listeners\SendNewTaskListener;
 use Illuminate\Auth\Events\Registered;
-use App\Observers\PostCategoryObserber;
 use App\Listeners\Housing\SendNewBookingListener;
 use App\Listeners\Housing\SendAcceptBookingListener;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;

@@ -11,4 +11,9 @@
 
     <livewire:components.cashier.order.index />
 
+    <div class="modal">
+        <div id="print">
+            @include('cashier.order.receipt')
+        </div>
+    </div>
 </x-app-layout>

@@ -38,8 +38,7 @@ class Product extends Model
         'description',
         'product_category_id',
         'brand_id',
-        'isAvailable',
-        'isVerified',
+        'status',
         'author_id'
     ];
 
@@ -83,6 +82,11 @@ class Product extends Model
         return $this->discount;
     }
 
+    public function code(): ?string
+    {
+        return $this->code;
+    }
+
     public function quantity(): string
     {
         return $this->qty;
@@ -115,14 +119,9 @@ class Product extends Model
             ->paginate($count);
     }
 
-    public function scopeVerified(Builder $query): Builder
-    {
-        return $query->where('isVerified', true);
-    }
-
     public function scopeAvailable(Builder $query): Builder
     {
-        return $query->where('isAvailable', true);
+        return $query->where('status', true);
     }
 
     public function scopeSearch($query, $term)
@@ -133,17 +132,6 @@ class Product extends Model
         });
     }
 
-    public function getVerifyBadgeAttribute()
-    {
-
-        $verify = [
-            '0' => 'Pending',
-            '1' => 'Accepted',
-        ];
-
-        return $verify[$this->isVerified];
-    }
-
     public function getAvailableBadgeAttribute()
     {
 
@@ -152,7 +140,7 @@ class Product extends Model
             '1' => 'Available',
         ];
 
-        return $verify[$this->isAvailable];
+        return $verify[$this->status];
     }
 
     public function getRouteKeyName()
@@ -162,7 +150,7 @@ class Product extends Model
 
     public function scopeSearchResults($query)
     {
-        return $query->verified()->available()
+        return $query->available()
             ->when(request()->filled('search'), function($query) {
                 $query->where(function($query) {
                     $search = request()->input('search');

@@ -10,77 +10,43 @@
     </x-slot>
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="invoice-title">
-                        <h4 class="float-end font-size-16">Daily Transactions For {{ Date('d-m-Y') }}</h4>
-                        <div class="mb-4">
-                            <img src="assets/images/logo-dark.png" alt="logo" height="20" />
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="py-2 mt-3">
-                        <h3 class="font-size-15 fw-bold">Order summary</h3>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-nowrap">
-                            <thead>
-                                <tr>
-                                    <th style="width: 70px;">No.</th>
-                                    <th>Item</th>
-                                    <th class="text-end">Price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>01</td>
-                                    <td>Skote - Admin Dashboard Template</td>
-                                    <td class="text-end">$499.00</td>
-                                </tr>
 
-                                <tr>
-                                    <td>02</td>
-                                    <td>Skote - Landing Template</td>
-                                    <td class="text-end">$399.00</td>
-                                </tr>
+                    <h4 class="card-title">Daily Transactions</h4>
 
-                                <tr>
-                                    <td>03</td>
-                                    <td>Veltrix - Admin Dashboard Template</td>
-                                    <td class="text-end">$499.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="text-end">Sub Total</td>
-                                    <td class="text-end">$1397.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="border-0 text-end">
-                                        <strong>Shipping</strong>
-                                    </td>
-                                    <td class="border-0 text-end">$13.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="border-0 text-end">
-                                        <strong>Total</strong>
-                                    </td>
-                                    <td class="border-0 text-end">
-                                        <h4 class="m-0">$1410.00</h4>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="d-print-none">
-                        <div class="float-end">
-                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i
-                                    class="fa fa-print"></i></a>
-                            <a href="{{ route('order.pdfview',['download'=>'pdf']) }}"
-                                class="btn btn-primary w-md waves-effect waves-light">Download</a>
-                        </div>
-                    </div>
+                    <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cashier's Name</th>
+                                <th>Payment Method</th>
+                                <th>Paid</th>
+                                <th>Balance</th>
+                                <th>Transaction Amount</th>
+                                <th>Orders</th>
+                                <th>Customer's Name</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach ($reports as $key => $report)
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $report->author()->name() }}</td>
+                                <td>{{ $report->method() }}</td>
+                                <td>{{ $report->payment() }}</td>
+                                <td>{{ $report->balance() }}</td>
+                                <td>{{ $report->orderdetail->sum('amount') }}</td>
+                                <td>{{ $report->orderdetail->count() }}</td>
+                                <td>{{ $report->name() }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
+        </div> <!-- end col -->
     </div>
 </x-app-layout>

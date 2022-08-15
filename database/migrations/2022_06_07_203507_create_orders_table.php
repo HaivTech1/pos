@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->text('payment_method')->nullable();
             $table->integer('payment')->nullable();
             $table->integer('balance')->nullable();
+            $table->string('barcode')->nullable();
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

@@ -83,8 +83,7 @@
                                     <th class="align-middle">product Name</th>
                                     <th class="align-middle">Price</th>
                                     <th class="align-middle">quantity</th>
-                                    <th class="align-middle">product Status</th>
-                                    <th class="align-middle">Verification Status</th>
+                                    <th class="align-middle">Product Status</th>
                                     <th class="align-middle">Action</th>
                                 </tr>
                             </thead>
@@ -99,12 +98,12 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="javascript: void(0);"
-                                            class="text-body fw-bold">{{ $product->id() }}</a>
+                                        <a href="javascript: void(0);" class="text-body fw-bold">{{ $product->id()
+                                            }}</a>
                                     </td>
                                     <td>
-                                        <a href="javascript: void(0);"
-                                            class="text-body fw-bold">{{ $product->title() }}</a>
+                                        <a href="javascript: void(0);" class="text-body fw-bold">{{ $product->title()
+                                            }}</a>
                                     </td>
                                     <td>
                                         {{ trans('global.naira') }}
@@ -112,30 +111,10 @@
                                     </td>
                                     <td>{{ $product->quantity()}}</td>
                                     <td>
-
-                                        @if ($product->available_badge == 'Not Available' )
-                                        <span class="badge badge-pill badge-soft-danger font-size-12">
-                                            {{ $product->available_badge }}</span>
-                                        @else
-                                        <span class="badge badge-pill badge-soft-success font-size-12">
-                                            {{ $product->available_badge }}</span>
-                                        @endif
-
+                                        <livewire:components.toggle-button :model='$product' field='status'
+                                            :key='$product->id()' />
                                     </td>
                                     <td>
-
-                                        @if ($product->verify_badge === 'Pending' )
-                                        <span class="badge badge-pill badge-soft-danger font-size-12">
-                                            {{ $product->verify_badge }}</span>
-                                        @else
-                                        <span class="badge badge-pill badge-soft-success font-size-12">
-                                            {{ $product->verify_badge }}</span>
-                                        @endif
-
-                                    </td>
-                                    <td>
-                                        <livewire:components.general-action :model="$product"
-                                            :wire:key="$product->id()" />
                                         <a class="dropdown-item" href="{{ route('product.show', $product) }}"><i
                                                 class="fa fa-eye"></i></a>
                                         <a class="dropdown-item" href="{{ route('product.edit', $product) }}"><i

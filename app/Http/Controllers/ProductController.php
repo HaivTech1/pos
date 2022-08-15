@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('admin.product.index');
+        return view('manager.product.index');
     }
 
     /**
@@ -32,7 +32,7 @@ class ProductController extends Controller
     {
         $categories = ProductCategory::all()->pluck('name', 'id');
         $brands = Brand::all()->pluck('title', 'id');
-        return view('admin.product.create', compact(['categories', 'brands']));
+        return view('manager.product.create', compact(['categories', 'brands']));
     }
 
     /**
@@ -64,7 +64,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('admin.product.show', compact(['product']));
+        return view('manager.product.show', compact(['product']));
     }
 
     /**
@@ -76,7 +76,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = ProductCategory::all()->pluck('name', 'id');
-        return view('admin.product.edit', compact(['product', 'categories']));
+        $brands = Brand::all()->pluck('title', 'id');
+        return view('manager.product.edit', compact(['product', 'categories', 'brands']));
     }
 
     /**

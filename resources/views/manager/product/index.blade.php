@@ -9,5 +9,5 @@
         </div>
     </x-slot>
 
-    <livewire:components.ecommerce.product />
+    <livewire:components.manager.product />
 </x-app-layout>

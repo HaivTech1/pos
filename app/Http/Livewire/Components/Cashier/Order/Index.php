@@ -10,6 +10,7 @@ use App\Models\Application;
 use App\Models\Orderdetail;
 use Livewire\WithPagination;
 use App\Models\ProductCategory;
+use Picqer;
 
 class Index extends Component
 {
@@ -146,6 +147,13 @@ class Index extends Component
                 'balance' => $this->balance
             ]);
             $order->authoredBy(auth()->user());
+            $order->save();
+            $generator = new Picqer\Barcode\BarcodeGeneratorJPG();
+            file_put_contents('storage/orders/barcodes/' . $order->id() . '.jpg',
+                $barcodes = $generator->getBarcode($order->id(), $generator::TYPE_CODE_128, 3, 50)
+            );
+
+            $order->barcode = $order->id() . '.jpg';
             $order->save();
     
             for ($index = 0; $index < count($this->productIncart); $index++) {

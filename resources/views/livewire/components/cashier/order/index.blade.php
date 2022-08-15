@@ -14,11 +14,10 @@
                                         <div class="row">
                                             <div class="d-flex justify-content-center">
                                                 <div class="btn-group btn-group-example mb-3" role="group">
-                                                    <a href="{{ route('print') }}"
-                                                        onclick="PrintReceiptContent('print')"
+                                                    <button type="button" onclick="PrintReceiptContent('print')"
                                                         class="btn btn-outline-primary w-sm">
                                                         Print
-                                                    </a>
+                                                    </button>
                                                     <button type="button" data-bs-toggle="modal"
                                                         data-bs-target="#exampleModalScrollable"
                                                         class="btn btn-outline-primary w-sm">History</button>
@@ -61,8 +60,8 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <x-form.input type='search' placeholder="Search..."
-                                                    wire:model.debounce.500ms="Search for product name" autofocus />
+                                                <x-form.input type='search' placeholder="Search for product name..."
+                                                    wire:model.debounce.500ms="search" autofocus />
                                             </div>
                                         </div>
                                     </div>
@@ -307,13 +306,13 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">ORDER HISTORY</h5>
+                <h5 class="modal-title" id="exampleModalScrollableTitle">LATEST ORDER HISTORY</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title mb-3">Recent Order Summary</h4>
+                        <h4 class="card-title mb-3">Order Summary</h4>
 
                         <div class="table-responsive">
                             <table class="table mb-0">
@@ -328,8 +327,8 @@
                                     @foreach($histories as $history)
                                     <tr>
                                         <td>{{ $history->product->title() }}</td>
-                                        <td>{{ $history->quantity }}</td>
-                                        <td>{{ $history->unitprice * $history->quantity }}</td>
+                                        <td>{{ $history->qty() }}</td>
+                                        <td>{{ $history->unitprice() * $history->qty() }}</td>
                                     </tr>
                                     @endforeach
                                     <tr>

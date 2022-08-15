@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
@@ -28,7 +30,11 @@ class Orderdetail extends Model
         'created_at' => 'datetime'
     ];
 
-    public function order()
+    protected $with = [
+        'order', 'product'
+    ];
+
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class, 'order_uuid');
     }

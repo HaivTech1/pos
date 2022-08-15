@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Components\Ecommerce;
+namespace App\Http\Livewire\Components\Manager;
 
 use App\Models\Product as EcommerceProduct;
 use Livewire\Component;
@@ -94,7 +94,7 @@ class Product extends Component
     
     public function render()
     {
-        return view('livewire.cashier.cashier.product',[
+        return view('livewire.components.manager.product',[
             'products' => $this->products,
         ]);
     }

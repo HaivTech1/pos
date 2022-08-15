@@ -17,12 +17,12 @@ class ApplicationSeeder extends Seeder
         $application = [
             [
             'id'        => 1,
-            'name'      =>  'haivtech',
-            'alias'     =>  'CL',
-            'email'     =>  'haivtech@gmail.com',
+            'name'      =>  'Omotayo & Sons',
+            'alias'     =>  'OS',
+            'email'     =>  'omotayosons@gmail.com',
             'line1'        =>  '09066100815',
             'line2'        =>  '09066100815',
-            'image'      =>  'applications/haivtech.png',
+            'image'      =>  'applications/omotayosons.png',
             'address'       =>  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis',
             'motto'     =>  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis',
             'slogan'        =>  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis',
@@ -34,7 +34,7 @@ class ApplicationSeeder extends Seeder
             'transac_report_alias'      => 'trx',
             'order_invoice_alias'       => 'ord',
             'section'       => '1',
-            'tax'       => 500,
+            'tax'       => 30,
             ],
         ];
         

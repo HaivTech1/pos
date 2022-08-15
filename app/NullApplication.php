@@ -7,7 +7,7 @@ use App\Models\Application;
 class NullApplication extends Application
 {
     protected $attributes = [
-        'name' => 'haivtech',
+        'name' => 'Omotayo & Sons',
         'alias'=> 'HT',
         'fax' => 33553,
         'email'=> 'haivtechent@gmail.com',
