@@ -9,6 +9,8 @@
     type="text/css" />
 <link rel="stylesheet" href="{{ asset('libs/%40chenfengyuan/datepicker/datepicker.min.css') }}">
 
+<link href="{{ asset('libs/bootstrap-editable/css/bootstrap-editable.css') }}" rel="stylesheet" type="text/css" />
+
 <!-- Bootstrap Css -->
 <link href="{{ asset('css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
 <!-- Icons Css -->
@@ -26,6 +28,13 @@
     type="text/css" />
 <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
     type="text/css" />
+
+<link href="{{ asset('libs/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('libs/morris-js/morris.min.css') }}" rel="stylesheet">
+<link href="{{ asset('libs/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/summernote.css')}}" rel="stylesheet">
+
 @livewireStyles
 @livewireScripts
 

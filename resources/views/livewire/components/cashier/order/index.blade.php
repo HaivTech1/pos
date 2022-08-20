@@ -299,52 +299,52 @@
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">LATEST ORDER HISTORY</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title mb-3">Order Summary</h4>
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">LATEST ORDER HISTORY</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-3">Order Summary</h4>
 
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($histories as $history)
-                                    <tr>
-                                        <td>{{ $history->product->title() }}</td>
-                                        <td>{{ $history->qty() }}</td>
-                                        <td>{{ $history->unitprice() * $history->qty() }}</td>
-                                    </tr>
-                                    @endforeach
-                                    <tr>
-                                        <th>Total :</th>
-                                        <th>{{ number_format($histories->sum('amount'), 2) }}</th>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($histories as $history)
+                                        <tr>
+                                            <td>{{ $history->product->title() }}</td>
+                                            <td>{{ $history->qty() }}</td>
+                                            <td>{{ $history->unitprice() * $history->qty() }}</td>
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <th>Total :</th>
+                                            <th>{{ number_format($histories->sum('amount'), 2) }}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- end table-responsive -->
                         </div>
-                        <!-- end table-responsive -->
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 </div>

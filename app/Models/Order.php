@@ -94,4 +94,9 @@ class Order extends Model
     {
         return $this->hasMany(Orderdetail::class, 'order_uuid');
     }
+
+    public function scopeMonthlySales(Builder $query, $month)
+    {
+        return $query->where('created_at', '=', $month.' 00:00:00');
+    }
 }

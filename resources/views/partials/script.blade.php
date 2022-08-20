@@ -36,12 +36,33 @@
 <script src="{{ asset('libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
 
+<script src="{{ asset('libs/select2/js/select2.min.js') }}"></script>
+
 <!-- Responsive examples -->
 <script src="{{ asset('libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
 <!-- Datatable init js -->
 <script src="{{ asset('js/pages/datatables.init.js') }}"></script>
+
+<!-- Plugins js -->
+<script src="{{ asset('libs/moment/min/moment.min.js') }}"></script>
+<script src="{{ asset('libs/bootstrap-editable/js/index.js') }}"></script>
+
+<!-- Init js-->
+{{-- <script src="{{ asset('js/pages/form-xeditable.init.js') }}"></script> --}}
+
+<script src="{{ asset('libs/morris-js/morris.min.js') }}"></script>
+<script src="{{ asset('libs/morris-js/raphael-js/raphael.min.js') }}"></script>
+<script src="{{ asset('libs/bootstrap-select/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/summernote.min.js')}}"></script>
+
+
+<script type="text/javascript">
+    window.addEventListener('receipt', event => {
+        $('#receipt').modal('show');
+    });
+</script>
 
 <script>
     //print section
@@ -64,51 +85,66 @@
 
 <script>
     $(document).ready(function() {
-    toastr.options = {
-        "positionClass": "toast-top-right",
-        "progressBar": true
-    }
+        toastr.options = {
+            "positionClass": "toast-top-right",
+            "progressBar": true
+        }
 
 
-    window.addEventListener('success', event => {
-        toastr.success(event.detail.message, 'Success!');
-    });
+        window.addEventListener('success', event => {
+            toastr.success(event.detail.message, 'Success!');
+        });
 
-    window.addEventListener('error', event => {
-        toastr.error(event.detail.message, 'Failed!');
-    });
+        window.addEventListener('error', event => {
+            toastr.error(event.detail.message, 'Failed!');
+        });
 
-    window.addEventListener('info', event => {
-        toastr.info(event.detail.message, 'Info!');
-    });
-})
+        window.addEventListener('info', event => {
+            toastr.info(event.detail.message, 'Info!');
+        });
+    })
 </script>
 
 <script>
     @if(Session::has('messege'))
-var type = "{{Session::get('alert-type','success')}}"
-switch (type) {
-    case 'info':
-        Notiflix.Report.Info("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
-            "{{ Session::get('button') }}", );
-        break;
-    case 'success':
-        Notiflix.Report.Success("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
-            "{{ Session::get('button') }}", );
-        break;
-    case 'warning':
-        Notiflix.Report.Warning("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
-            "{{ Session::get('button') }}", );
-        break;
-    case 'error':
-        Notiflix.Report.Failure("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
-            "{{ Session::get('button') }}", );
-        break;
-}
-@endif
+    var type = "{{Session::get('alert-type','success')}}"
+    switch (type) {
+        case 'info':
+            Notiflix.Report.Info("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
+                "{{ Session::get('button') }}", );
+            break;
+        case 'success':
+            Notiflix.Report.Success("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
+                "{{ Session::get('button') }}", );
+            break;
+        case 'warning':
+            Notiflix.Report.Warning("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
+                "{{ Session::get('button') }}", );
+            break;
+        case 'error':
+            Notiflix.Report.Failure("{{ Session::get('title') }}", "{{ Session::get('messege') }}",
+                "{{ Session::get('button') }}", );
+            break;
+    }
+    @endif
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Select2 Multiple
+        $('.select2-multiple').select2({
+            placeholder: "Select",
+            allowClear: true
+        });
+
+    });
 </script>
 
 @yield('scripts')
 
 @stack('modals')
 <script src="{{ asset('js/alpine.js') }}"></script>
+
+@if (Route::currentRouteName() == ('dashboard'))
+<?php require_once 'js/views/order/analysis.php';?>
+@endif

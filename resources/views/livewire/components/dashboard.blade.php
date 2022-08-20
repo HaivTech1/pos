@@ -11,4 +11,10 @@
         </x-slot>
         Products
     </x-card.mini>
+    <x-card.mini>
+        <x-slot name="count">
+            {{ $orders->count()}}
+        </x-slot>
+        Orders
+    </x-card.mini>
 </div>

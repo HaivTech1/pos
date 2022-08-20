@@ -74,8 +74,28 @@ class Orderdetail extends Model
         return $this->created_at->format('d F Y');
     }
     
-    public function scopeToday(Builder $query)
+    public function scopeTodaySales(Builder $query)
     {
-        return $query->where('created_at', $this->createdAt());
+        return $query->where('created_at', '>=', date('Y-m-d').' 00:00:00');
+    }
+
+    public function scopeYesterdaySales(Builder $query)
+    {
+        return $query->where('created_at', '>=', date('Y-m-d', strtotime("-1 days")).' 00:00:00');
+    }
+
+    public function scopeMonthlySales(Builder $query, $month)
+    {
+        return $query->where('created_at', '>=', $month.' 00:00:00');
+    }
+
+    public function scopeTotalSales(Builder $query)
+    {
+        return $query->where('created_at', '>=', date('Y-m-d').' 00:00:00');
+    }
+
+    public function resultPercentage(): int
+    {
+        return (int) $percent =  divnum($this->grandTotal() , $this->grandTotalObtainable()) * 100;
     }
 }

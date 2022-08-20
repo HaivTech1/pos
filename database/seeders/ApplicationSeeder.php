@@ -29,7 +29,7 @@ class ApplicationSeeder extends Seeder
             'regNo'        =>  'RC43243',
             'description'       =>  'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
             'currency'      => 'Naira',
-            'symbol'        => '#',
+            'symbol'        => '₦',
             'decimal_number'        => '2',
             'transac_report_alias'      => 'trx',
             'order_invoice_alias'       => 'ord',

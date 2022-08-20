@@ -6,7 +6,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrintController;
+use App\Http\Controllers\OptionsController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\ProductCategoryController;
 
@@ -18,9 +22,7 @@ Route::middleware([
     'auth:sanctum',
 ])->group(function () {
     
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('task',TaskController::class);
     Route::resource('setting',ApplicationController::class);
@@ -50,6 +52,21 @@ Route::middleware([
         Route::get('/', [BrandController::class, 'index'])->name('index');
     });
 
+    Route::group(['prefix' => 'messaging', 'as' => 'messaging.'], function () {
+        Route::get('/email', [MessagingController::class, 'indexEmail'])->name('email');
+        Route::post('/messaging/email/send', [MessagingController::class, 'sendEmail'])->name('sendMail');
+        Route::get('/messaging/sms', [MessagingController::class, 'indexSMS'])->name('sms');
+        Route::post('/messaging/sms/send', [MessagingController::class, 'sendSMS'])->name('sendSMS');
+    });
+
+    Route::group(['prefix' => 'option', 'as' => 'option.'], function () {
+        Route::get('/options/get', [OptionsController::class, 'getOption'])->name('get');
+        Route::get('/options/branch/get', [OptionsController::class, 'getBranchOption'])->name('branch.get');
+        Route::post('/options/branch/put', [OptionsController::class, 'putBranchOption'])->name('branch.post');
+    });
+
+    Route::get('/get/banks', [OptionsController::class, 'banks'])->name('banks');
+
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::post('/', [ProductController::class, 'store'])->name('store');
@@ -77,6 +94,12 @@ Route::middleware([
         Route::put('/{user}', [OrderController::class, 'update'])->name('update');
         Route::get('pdfview', [OrderController::class, 'pdfview'])->name('pdfview');
     });
+    
     Route::get('print/test', [PrintController::class, 'test'])->name('print');
 
+     // PAYMENT
+     Route::resource('/payments', PaymentController::class);
+     Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
+     Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback']);
+     Route::get('/payment/status', [PaymentController::class, 'status']);
 });

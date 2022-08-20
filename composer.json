@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "arielmejiadev/larapex-charts": "^4.1",
         "barryvdh/laravel-dompdf": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -20,7 +21,9 @@
         "mike42/escpos-php": "^4.0",
         "mpociot/teamwork": "^7.0",
         "picqer/php-barcode-generator": "^2.2",
-        "silviolleite/laravelpwa": "^2.0"
+        "silviolleite/laravelpwa": "^2.0",
+        "unicodeveloper/laravel-paystack": "^1.0",
+        "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

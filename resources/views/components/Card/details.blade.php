@@ -12,35 +12,20 @@
             </div>
         </div>
     </div>
-    <div class="card-body pt-0">
-        <div class="row">
-            <div class="col-sm-8">
-                <div data-simplebar style="max-height: 230px;">
-                    <a href="{{ route('teams.create') }}" class="text-reset notification-item">
-                        <div class="d-flex">
-                            <div class="avatar-xs me-3">
-                                <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                    <i class="bx bx-dialpad"></i>
-                                </span>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1" key="t-your-order">{{ __('Create New Team') }}</h6>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- Team Switcher -->
-                    @if( Auth::user()->isTeamOwner() )
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ Auth::user()->currentTeam->name }}
-                    </div>
-                    @endif
-
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Daily Sales</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p class="text-muted">Today</p>
+                    <h3>{{ application('symbol') }} {{ $order->sum('amount') }}</h3>
+                    <p class="text-muted"><span class="text-success me-2"> Total Orders: {{ $order->count() }}</p>
                 </div>
-            </div>
-
-            <div class="col-sm-4">
-
+                {{-- <div class="col-sm-6">
+                    <div class="mt-4 mt-sm-0">
+                        <div id="radialBar-chart" class="apex-charts"></div>
+                    </div>
+                </div> --}}
             </div>
         </div>
     </div>

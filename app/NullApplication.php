@@ -23,7 +23,7 @@ class NullApplication extends Application
         'regNo'=> 'RC45466',
         'description'=> 'Default descrption',
         'currency'      => 'Naira',
-        'symbol'        => '#',
+        'symbol'        => '₦',
         'decimal_number'        => '2',
         'transac_report_alias'      => 'trx',
         'order_invoice_alias'       => 'ord',
