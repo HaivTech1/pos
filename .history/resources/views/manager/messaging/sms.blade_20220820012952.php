@@ -75,7 +75,7 @@
                                     placeholder="type in your message"></textarea>
 
                                 <div class="d-flex justify-content-center flex-wrap mt-5">
-                                    <button id="send-btn" type="submit"
+                                    <button type="submit"
                                         class="btn btn-primary block waves-effect waves-light pull-right">Send
                                         Message</button>
                                 </div>
@@ -439,7 +439,7 @@
 
         var getSmsBalanceApi = async (fn) => {
             let value = false
-            $.get("{{route('option.branch.get')}}")
+            $.get("")
                 .done((res) => {
                     if (res.status) {
                         res.text.forEach((v) => {

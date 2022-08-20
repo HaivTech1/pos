@@ -68,7 +68,7 @@ class MessagingController extends Controller
                     $client = new \Vonage\Client($basic);
 
                     $response = $client->sms()->send(
-                        new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
+                        new \Vonage\SMS\Message\SMS($to."2349066100815", BRAND_NAME, $message)
                     );
                     
                     $message = $response->current();

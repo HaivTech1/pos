@@ -33,49 +33,14 @@
                             @else
                             <form id="send-sms-form" method="POST" action="{{route('messaging.sendSMS')}}">
                                 @csrf
-                                <div id="sms_balance_container" class="pull-right bg-warning">
-                                </div>
                                 <input name="author_id" value="3" type="text" hidden="hidden" />
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="mb-3">
-                                            <select class="form-control block w-full mt-1 select2-multiple" name="to[]"
-                                                multiple="multiple" data-placeholder="Choose Receipient..."
-                                                id="num-selector" name="to[]">
-                                                <optgroup label="Select Receipient">
-                                                    @foreach ($users as $user)
-                                                    <option value="{{ $user->phone }}">{{ $user->name() . ' - ' .
-                                                        $user->phone }}</option>
-                                                    @endforeach
-                                                </optgroup>
-                                                <optgroup label="Select Supplier">
-                                                    <option value="AL">Alabama</option>
-                                                </optgroup>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <div class="row">
-                                            <div class="col-sm-9">
-                                                <x-form.input id="nums" type="number"
-                                                    placeholder="Type in comma seperated Numbers and click add"
-                                                    class="form-control" aria-label="Recipient's email"
-                                                    aria-describedby="basic-addon2" />
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <button id="add-num" type="button"
-                                                    class="btn btn-primary block waves-effect waves-light pull-right">
-                                                    Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
 
                                 <textarea class="form-control" id="demo-mail-textarea" rows="5" name="message"
                                     placeholder="type in your message"></textarea>
 
                                 <div class="d-flex justify-content-center flex-wrap mt-5">
-                                    <button id="send-btn" type="submit"
+                                    <button type="submit"
                                         class="btn btn-primary block waves-effect waves-light pull-right">Send
                                         Message</button>
                                 </div>
@@ -382,6 +347,72 @@
                 $.each(val, function (i, item) {});
             });
 
+            //add group function
+            $('#add-group').click(function () {
+                //remove attribute on click
+                $('#groups-selector').find(":selected").removeAttr("selected");
+                var items = $('#groups-selector').find(":selected").map(function () {
+                    return this.text;
+                }).get();
+                //do nothing if empty
+                if (items.length == 0) {
+                    return;
+                }
+                //transfer the groups
+                var values = {
+                    'group': items,
+                    '_token': '{{ csrf_token() }}'
+                };
+                //get list of members in each group
+                $.ajax({
+                        type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                        url: "", // the url where we want to POST
+                        data: values, // our data object
+                        dataType: 'json', // what type of data do we expect back from the server
+                        encode: true
+                    }) //<optgroup label="filter2">
+                    // using the done promise callback
+                    .done(function (data) {
+                        if (data.status) {
+                            let itemss = data.groupMember;
+                            //append list to the emails
+                            $.each(itemss, function (i, items) {
+                                $('#num-selector').append($('<optgroup label="' + i +
+                                    '"></optgroup>'));
+                                $.each(items, function (ii, item) {
+                                    //check if already in list
+                                    let options = $("#num-selector option[value='" +
+                                        item.phone +
+                                        "'], #num-selector optgroup[value='" +
+                                        item.phone + "']");
+                                    if (options.length > 0) {
+                                        $.each(options, function () {
+                                            //delete email options
+                                            $(this).remove();
+                                        });
+                                    }
+                                    $('#num-selector optgroup[label="' + i + '"]')
+                                        .append($('<option>', {
+                                            value: item.phone,
+                                            text: item.firstname + ' ' +
+                                                item.lastname + ' - ' + item
+                                                .phone,
+                                            selected: 'selected'
+                                        }, '</option>'));
+                                });
+                            });
+                        } else {
+                            alert('Error occured Please try again');
+                        }
+                        //clear the selectpicker
+                        $('#groups-selector').find(":selected").removeAttr("selected");
+                        $('#groups-selector').selectpicker('deselectAll');
+                        $('#groups-selector').selectpicker('refresh');
+                        $('#num-selector').selectpicker('refresh');
+                        alert('Group Members Added');
+                    });
+            });
+
             // set the balance
             setBalance()
 
@@ -439,7 +470,7 @@
 
         var getSmsBalanceApi = async (fn) => {
             let value = false
-            $.get("{{route('option.branch.get')}}")
+            $.get("")
                 .done((res) => {
                     if (res.status) {
                         res.text.forEach((v) => {

@@ -61,25 +61,19 @@ class MessagingController extends Controller
   
         if($smsapi){
             foreach ($request->to as $to){
+                $message = urlencode($request->message);
+                try {
+                  $response = file_get_contents($smsapi->value."&recipient={$to}&message={$message}");
+                } catch (\Exception $e) {
+                  return response()->json(['status' => false, 'text' => 'Sms Api Not Valid. Please set a valid api or contact for assistance']);
+                  break;
+                }
 
-                    $message = urlencode($request->message);
-                
-                    $basic  = new \Vonage\Client\Credentials\Basic("b85b9158", "ApNc3v2VpO1f7NNN");
-                    $client = new \Vonage\Client($basic);
-
-                    $response = $client->sms()->send(
-                        new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
-                    );
-                    
-                    $message = $response->current();
-                    
-                    if ($message->getStatus() == 0) {
-                        echo "The message was sent successfully\n";
-                    } else {
-                        echo "The message failed with status: " . $message->getStatus() . "\n";
-                    } 
-            }
-            return response()->json(['status' => true, 'text' => 'The message was sent successfully']);
+            
+              
+        }
+            
+            return response()->json(['status' => true, 'text' => $result]);
           } else {
             return response()->json(['status' => false, 'text' => 'Sms Api Not Set From Admin Options']);
           }

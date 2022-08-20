@@ -62,13 +62,13 @@ class MessagingController extends Controller
         if($smsapi){
             foreach ($request->to as $to){
 
-                    $message = urlencode($request->message);
+                $message = urlencode($request->message);
                 
                     $basic  = new \Vonage\Client\Credentials\Basic("b85b9158", "ApNc3v2VpO1f7NNN");
                     $client = new \Vonage\Client($basic);
 
                     $response = $client->sms()->send(
-                        new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
+                        new \Vonage\SMS\Message\SMS("2349066100815", BRAND_NAME, 'A text message sent using the Nexmo SMS API')
                     );
                     
                     $message = $response->current();

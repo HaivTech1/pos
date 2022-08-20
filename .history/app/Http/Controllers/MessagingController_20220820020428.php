@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Options;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Mail\Messaging\SendMail;
-use App\Notifications\SendMessage;
 use Illuminate\Support\Facades\Mail;
 
 class MessagingController extends Controller
@@ -59,27 +58,36 @@ class MessagingController extends Controller
         //   dd($smsapi);
   
   
-        if($smsapi){
-            foreach ($request->to as $to){
-
-                    $message = urlencode($request->message);
-                
-                    $basic  = new \Vonage\Client\Credentials\Basic("b85b9158", "ApNc3v2VpO1f7NNN");
-                    $client = new \Vonage\Client($basic);
-
-                    $response = $client->sms()->send(
-                        new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
-                    );
-                    
-                    $message = $response->current();
-                    
-                    if ($message->getStatus() == 0) {
-                        echo "The message was sent successfully\n";
-                    } else {
-                        echo "The message failed with status: " . $message->getStatus() . "\n";
-                    } 
+          if($smsapi){
+              foreach ($request->to as $to){
+              $message = urlencode($request->message);
+              try {
+                $response = file_get_contents(http://api.smartsmssolutions.com/smsapi.php?username=iamblizzyy@gmail.com&password=revelation1&sender={$sender}&recipient={$to}&message={$message}."&recipient={$to}&message={$message}");
+              } catch (\Exception $e) {
+                return response()->json(['status' => false, 'text' => 'Sms Api Not Valid. Please set a valid api or contact for assistance']);
+                break;
+              }
+  
+              if (substr($response,0,2) == "OK") {
+                array_push($result['fail']['status'], $response);
+                $result['pass']['count']++;
+              } else {
+                array_push($result['fail']['status'], $response);
+                array_push($result['fail']['numbers'], $to);
+                $result['fail']['count']++;
+              }
+              //$response = $this->curl_get("http://api.smartsmssolutions.com/smsapi.php?username=iamblizzyy@gmail.com&password=revelation1&sender=ASAP&recipient={$to}&message={$message}",[],[]);
+              // $response = file_get_contents("http://api.smartsmssolutions.com/smsapi.php?username=iamblizzyy@gmail.com&password=revelation1&sender={$sender}&recipient={$to}&message={$message}");
             }
-            return response()->json(['status' => true, 'text' => 'The message was sent successfully']);
+            // if (substr($response,0,2) == "OK")
+            // {
+            //     return redirect()->back()->with('status','Message Successfullt Sent!');
+            // }
+            // else {
+            //
+            //     return redirect()->back()->with('status','FAILURE!! Could not Send Message.'.$response);
+            // }
+            return response()->json(['status' => true, 'text' => $result]);
           } else {
             return response()->json(['status' => false, 'text' => 'Sms Api Not Set From Admin Options']);
           }

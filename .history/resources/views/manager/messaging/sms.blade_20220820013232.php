@@ -75,7 +75,7 @@
                                     placeholder="type in your message"></textarea>
 
                                 <div class="d-flex justify-content-center flex-wrap mt-5">
-                                    <button id="send-btn" type="submit"
+                                    <button type="submit"
                                         class="btn btn-primary block waves-effect waves-light pull-right">Send
                                         Message</button>
                                 </div>
@@ -424,17 +424,17 @@
             // return
             // }
 
-            // // fetch the sms balance units
-            // balance = await getBalance(balanceUrl)
-            // if error fetching balance
-            // if (!balance) {
-            //   // tell the user
-            //   $('#sms_balance_container').html(`<h3>${balance}</h3>`)
-            //   return
-            // }
+            // fetch the sms balance units
+            balance = await getBalance(balanceUrl)
+            if error fetching balance
+            if (!balance) {
+              // tell the user
+              $('#sms_balance_container').html(`<h3>${balance}</h3>`)
+              return
+            }
 
-            // // display result to user
-            // $('#sms_balance_container').html(`<h3>${balance}</h3>`)
+            // display result to user
+            $('#sms_balance_container').html(`<h3>${balance}</h3>`)
         }
 
         var getSmsBalanceApi = async (fn) => {

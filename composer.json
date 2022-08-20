@@ -23,6 +23,7 @@
         "picqer/php-barcode-generator": "^2.2",
         "silviolleite/laravelpwa": "^2.0",
         "unicodeveloper/laravel-paystack": "^1.0",
+        "vonage/client": "^3.0",
         "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {

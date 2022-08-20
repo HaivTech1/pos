@@ -33,8 +33,6 @@
                             @else
                             <form id="send-sms-form" method="POST" action="{{route('messaging.sendSMS')}}">
                                 @csrf
-                                <div id="sms_balance_container" class="pull-right bg-warning">
-                                </div>
                                 <input name="author_id" value="3" type="text" hidden="hidden" />
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -53,6 +51,7 @@
                                                 </optgroup>
                                             </select>
                                         </div>
+
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="row">
@@ -69,15 +68,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <textarea class="form-control" id="demo-mail-textarea" rows="5" name="message"
-                                    placeholder="type in your message"></textarea>
-
-                                <div class="d-flex justify-content-center flex-wrap mt-5">
-                                    <button id="send-btn" type="submit"
-                                        class="btn btn-primary block waves-effect waves-light pull-right">Send
-                                        Message</button>
                                 </div>
                             </form>
                             @endif
@@ -191,85 +181,78 @@
     <!-- for email manual number input -->
     <script>
         var dt = {}
-        $.ajax({
-                url: "{{route('option.branch.get')}}"
-            })
-            .done((res) => {
-                if (res.status) {
-                    console.log(res.status)
-                    json = res.text
-                    json.forEach((index) => {
-                        dt[index.name] = index.value
-                    })
-                    console.log(dt);
-                    const opt = "setValue"
+        $.ajax({url: "{{route('option.branch.get')}}"})
+        .done((res) => {
+            if (res.status) {
+                console.log(res.status)
+                json = res.text
+                json.forEach((index) => {
+                    dt[index.name] = index.value
+                })
+                console.log(dt);
+                const opt = "setValue"
 
-                    $("#smsapi").editable(opt, dt.smsapi)
-                    $("#smsbalanceapi").editable(opt, dt.smsbalanceapi)
-                    $("#collection_commission").editable(opt, dt.collection_commission)
-                    $("#bank_select").append(
-                        `<option selected value="${dt.commission_account_bank}">${dt.commission_account_bank}</option>`
-                    )
-                    $("#commission_account_name").val(dt.commission_account_name)
-                    $("#commission_account_number").val(dt.commission_account_number)
-                    // $("#collection_commission").editable(opt, dt.collection_commission)
-                }
-            })
-            .fail((e) => {
-                console.log(e);
-            })
+                $("#smsapi").editable(opt, dt.smsapi)
+                $("#smsbalanceapi").editable(opt, dt.smsbalanceapi)
+                $("#collection_commission").editable(opt, dt.collection_commission)
+                $("#bank_select").append(`<option selected value="${dt.commission_account_bank}">${dt.commission_account_bank}</option>`)
+                $("#commission_account_name").val(dt.commission_account_name)
+                $("#commission_account_number").val(dt.commission_account_number)
+                // $("#collection_commission").editable(opt, dt.collection_commission)
+            }
+        })
+        .fail((e) => {
+            console.log(e);
+        })
 
-        $(document).ready(() => {
+        $(document).ready( () => {
 
             // on submit sub account
             $('#sub-account').submit((e) => {
                 e.preventDefault();
                 const data = $('#sub-account').serializeArray()
 
-                $.post({
-                        url: "{{route('option.branch.post')}}",
-                        data
-                    })
-                    .done((res) => {
-                        alert(res.text)
-                    }).fail((e) => alert('Error invalid details'))
+                $.post({url: "{{route('option.branch.post')}}", data})
+                .done((res) => {
+                alert(res.text)
+                }).fail((e) => alert('Error invalid details'))
             })
 
             // fetch banks for select drop down
             $.get("{{route('banks')}}").done((res) => {
                 res.map((v) => {
-                    $('#bank_select').append(`<option value="${v.value}">${v.text}</option>`)
+                $('#bank_select').append(`<option value="${v.value}">${v.text}</option>`)
                 })
             })
 
             // defaults
-            $.fn.editable.defaults.url = "{{route('option.branch.post')}}";
-            $.fn.editable.defaults.send = 'always';
+                $.fn.editable.defaults.url = "{{route('option.branch.post')}}";
+                $.fn.editable.defaults.send = 'always';
             // default params e.g token
+                
+                $.fn.editable.defaults.params = function (params) {
+                    params._token = "{{csrf_token()}}";
+                    return params;
+                };
 
-            $.fn.editable.defaults.params = function (params) {
-                params._token = "{{csrf_token()}}";
-                return params;
-            };
-
-            $("#demo-editable-enable").click(function () {
+            $("#demo-editable-enable").click(function() {
                 $("#demo-editable-table .editable").editable("toggleDisabled");
             });
 
             //smsapi
             $("#smsapi").editable({
-                type: "text",
-                pk: 1,
-                name: "smsapi",
+                type: "text", 
+                pk: 1, 
+                name: "smsapi", 
                 mode: "inline",
-                params: function (d) {
+                params: function(d){
                     d._token = "{{csrf_token()}}";
-                    d.value = encodeURI(d.value)
+                    d.value =  encodeURI(d.value)
                     return d
                 },
-                title: "Enter Your SMS Api Url Exluding message parameter",
-                validate: function (value) {
-                    if ($.trim(value) == "") return "This field is required";
+                    title: "Enter Your SMS Api Url Exluding message parameter",
+                validate: function(value) {
+                    if($.trim(value) == "") return "This field is required";
                 }
             });
 
@@ -279,107 +262,161 @@
                 pk: 1,
                 name: "smsbalanceapi",
                 mode: "inline",
-                params: function (d) {
+                params: function(d){
                     d._token = "{{csrf_token()}}";
-                    d.value = encodeURI(d.value)
+                    d.value =  encodeURI(d.value)
                     return d
                 },
                 title: "Enter Your SMS Balance Api Url For Getting SMS Unit Balance",
-                validate: function (value) {
-                    if ($.trim(value) == "") return "This field is required";
+                validate: function(value) {
+                    if($.trim(value) == "") return "This field is required";
+                    }
+                });
+
+            });
+
+             // collection commission
+            $("#collection_commission").editable({
+                validate: function(value) {
+                if($.trim(value) == "") return "This field is required";
                 }
             });
 
-        });
-
-        // collection commission
-        $("#collection_commission").editable({
-            validate: function (value) {
-                if ($.trim(value) == "") return "This field is required";
-            }
-        });
-
-        var responseText = (obj) => {
-            text = ''
-            text += `${obj.pass.count} Sent ${obj.fail.count} Failed. Out Of ${obj.total} \n`
-            text += (obj.fail.count > 0) ? `Failed Number(s): ${$.each(obj.fail.numbers,(v) => (`${v} `))} \n
+            var responseText = (obj) => {
+                text = ''
+                text += `${obj.pass.count} Sent ${obj.fail.count} Failed. Out Of ${obj.total} \n`
+                text += (obj.fail.count > 0) ? `Failed Number(s): ${$.each(obj.fail.numbers,(v) => (`${v} `))} \n
                 Failed Status: ${$.each(obj.fail.status,(v) => (`${v} `))}` : ''
-            return text
-        }
+                return text
+            }
 
-        const saveClick = () => {
-            $('#mod').hide();
-            $('#def').show();
-            $('#save-ho').hide();
-            $('#cancel-ho').hide();
-            $('#edit-ho').show();
-            $('#img-logo').show();
-            $('#img-logo-input').hide();
-        }
+            const saveClick = () => {
+                $('#mod').hide();
+                $('#def').show();
+                $('#save-ho').hide();
+                $('#cancel-ho').hide();
+                $('#edit-ho').show();
+                $('#img-logo').show();
+                $('#img-logo-input').hide();
+            }
 
-        const editClick = () => {
-            $('#img-logo').hide();
-            $('#mod').show();
-            $('#img-logo-input').show();
-            $('#cancel-ho').show();
-            $('#def').hide();
-            $('#edit-ho').hide();
-            $('#save-ho').show();
-        }
+            const editClick = () => {
+                $('#img-logo').hide();
+                $('#mod').show();
+                $('#img-logo-input').show();
+                $('#cancel-ho').show();
+                $('#def').hide();
+                $('#edit-ho').hide();
+                $('#save-ho').show();
+            }
 
-        const cancelClick = () => {
-            $('#mod').hide();
-            $('#cancel-ho').hide();
-            $('#img-logo').show();
-            $('#def').show();
-            $('#img-logo-input').hide();
-            $('#edit-ho').show();
-            $('#save-ho').hide();
-        }
+            const cancelClick = () => {
+                $('#mod').hide();
+                $('#cancel-ho').hide();
+                $('#img-logo').show();
+                $('#def').show();
+                $('#img-logo-input').hide();
+                $('#edit-ho').show();
+                $('#save-ho').hide();
+            }
 
         // var dummyRes = {status: true, text: { pass: {status: [], count: 1}, fail: {status: [], count: 0, numbers: []}, total: 1}}
-        $(document).ready(function () {
+        $(document).ready(function(){
             $('#send-sms-form').submit((e) => {
                 toggleAble($('#send-btn'), true, 'sending...')
                 e.preventDefault();
                 data = $('#send-sms-form').serializeArray()
                 url = ""
-                poster({
-                    data,
-                    url,
-                    alert: 'false'
-                }, (res) => {
-                    // res = dummyRes
-                    if (res.status === true) {
-                        text = responseText(res.text)
-                        swal("Success", text, "success");
-                    } else if (res.status === false) {
-                        swal("Oops", res.text, "error");
-                    }
+                poster({data, url, alert: 'false'}, (res) => {
+                // res = dummyRes
+                if (res.status === true) {
+                    text = responseText(res.text)
+                    swal("Success", text, "success");
+                } else if (res.status === false) {
+                    swal("Oops", res.text, "error");
+                }
                     toggleAble($('#send-btn'), false)
                     setBalance()
                     console.log(res);
                 })
             })
 
-            $('#add-num').click(function () {
-                if (!$('#nums').val()) {
-                    return;
-                }
-                var items = $('#nums').val().split(',');
-                $.each(items, function (i, item) {
-                    $('#nums').val('');
-                    //$("#list").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+ item +'  <span class="badge badge-danger badge-pill"><i onClick="rm_num(this);" class="btn fa fa-trash"></i></span></li>');
-                    $('#num-selector').append($('<option>', {
-                        value: item,
-                        text: item,
-                        selected: 'selected'
-                    }, '</option>'));
-                });
-                var val = $('#num-selector').text().split(',');
-                alert('Added ' + items);
+            $('#add-num').click(function(){
+                if(!$('#nums').val()){return;}
+                    var items = $('#nums').val().split(',');
+                    $.each(items, function (i, item) {
+                        $('#nums').val('');
+                        //$("#list").append('<li class="list-group-item d-flex justify-content-between align-items-center">'+ item +'  <span class="badge badge-danger badge-pill"><i onClick="rm_num(this);" class="btn fa fa-trash"></i></span></li>');
+                            $('#num-selector').append($('<option>'
+                            , {
+                                    value: item,
+                                    text : item,
+                                    selected: 'selected'
+                            }, '</option>'
+                            ));
+                    });
+                    var val = $('#num-selector').text().split(',');
+                    alert('Added ' + items);
                 $('#num-selector').selectpicker('refresh');
-                $.each(val, function (i, item) {});
+                    $.each(val, function(i,item){
+                    });
+            });
+
+            //add group function
+            $('#add-group').click(function(){
+                //remove attribute on click
+                $('#groups-selector').find(":selected").removeAttr("selected");
+                var items = $('#groups-selector').find(":selected").map(function() {
+                    return this.text;
+                }).get();
+                //do nothing if empty
+                if(items.length == 0){return;}
+                //transfer the groups
+                var values = {'group': items, '_token': '{{ csrf_token() }}' };
+                //get list of members in each group
+                $.ajax({
+                    type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url         : "", // the url where we want to POST
+                    data        : values, // our data object
+                    dataType    : 'json', // what type of data do we expect back from the server
+                    encode      : true
+                })//<optgroup label="filter2">
+                // using the done promise callback
+                .done(function(data) {
+                if(data.status){
+                    let itemss = data.groupMember;
+                    //append list to the emails
+                    $.each(itemss, function (i, items) {
+                    $('#num-selector').append($('<optgroup label="'+i+'"></optgroup>'));
+                    $.each( items, function (ii, item) {
+                        //check if already in list
+                        let options = $("#num-selector option[value='"+item.phone+"'], #num-selector optgroup[value='"+item.phone+"']");
+                        if(options.length > 0){
+                        $.each(options, function(){
+                            //delete email options
+                            $(this).remove();
+                        });
+                        }
+                        $('#num-selector optgroup[label="'+i+'"]').append($('<option>',
+                        {
+                        value: item.phone,
+                        text : item.firstname  + ' ' + item.lastname + ' - ' + item.phone,
+                        selected: 'selected'
+                        }, '</option>'
+                        ));
+                    });
+                    });
+                }
+                else{
+                    alert('Error occured Please try again');
+                }
+                //clear the selectpicker
+                $('#groups-selector').find(":selected").removeAttr("selected");
+                $('#groups-selector').selectpicker('deselectAll');
+                $('#groups-selector').selectpicker('refresh');
+                $('#num-selector').selectpicker('refresh');
+                alert('Group Members Added');
+                });
             });
 
             // set the balance
@@ -387,97 +424,92 @@
 
         });
         //selected="selected" value="' + item +'" >'+ item +'</option>'
-        function rm_num(d) {
+        function rm_num(d){
             var text = $(d).parent().parent().text();
-            var input = $("#num-selector option[value='" + text + "']").remove();
+            var input = $("#num-selector option[value='"+ text +"']").remove();
             var ll = $('#list ' + d).remove();
         }
 
         var setBalance = async () => {
-            // tell the user about to fetch sms balance
-            $('#sms_balance_container').html('<h3>Fetching sms Balance...</h3>')
-            // fetch the sms balance api
-            balanceUrl = await getSmsBalanceApi(async (url) => {
-                if (url) {
-                    // fetch the sms balance units
-                    balance = await getBalance(url, (res) => {
-                        if (!res) {
-                            // tell the user
-                            smsBalanceMessage(res)
-                            return;
-                        }
-                        // display result to user
-                        console.log(res);
-                        smsBalanceMessage(res + 'Units')
-                        $('#sms_balance_container').html(`<h3>${res} Units</h3>`)
-                    })
-                } else {
-
+        // tell the user about to fetch sms balance
+        $('#sms_balance_container').html('<h3>Fetching sms Balance...</h3>')
+        // fetch the sms balance api
+        balanceUrl = await getSmsBalanceApi( async (url) => {
+            if(url){
+            // fetch the sms balance units
+            balance = await getBalance(url, (res) => {
+                if (!res) {
+                // tell the user
+                smsBalanceMessage(res)
+                return ;
                 }
-
+                // display result to user
+                console.log(res);
+                smsBalanceMessage(res + 'Units')
+                $('#sms_balance_container').html(`<h3>${res} Units</h3>`)
             })
-            // if not set
-            // if (!balanceUrl) {
+            } else {
+
+            }
+
+        })
+        // if not set
+        // if (!balanceUrl) {
             // tell the user
             $('#sms_balance_container').html('<h3>Api Not Set</h3>')
             // alert('Sms Balance Api Not Set')
             // return
-            // }
+        // }
 
-            // // fetch the sms balance units
-            // balance = await getBalance(balanceUrl)
-            // if error fetching balance
-            // if (!balance) {
-            //   // tell the user
-            //   $('#sms_balance_container').html(`<h3>${balance}</h3>`)
-            //   return
-            // }
+        // // fetch the sms balance units
+        // balance = await getBalance(balanceUrl)
+        // if error fetching balance
+        // if (!balance) {
+        //   // tell the user
+        //   $('#sms_balance_container').html(`<h3>${balance}</h3>`)
+        //   return
+        // }
 
-            // // display result to user
-            // $('#sms_balance_container').html(`<h3>${balance}</h3>`)
+        // // display result to user
+        // $('#sms_balance_container').html(`<h3>${balance}</h3>`)
         }
 
         var getSmsBalanceApi = async (fn) => {
-            let value = false
-            $.get("{{route('option.branch.get')}}")
-                .done((res) => {
-                    if (res.status) {
-                        res.text.forEach((v) => {
-                            if (v.name === 'smsbalanceapi') {
-                                fn(v.value)
-                            }
-                        })
-                    } else {
-                        fn(false)
-                    }
-                })
-                .fail((err) => {
-                    fn(false);
-                    console.log(err);
-                })
+        let value = false
+        $.get("")
+        .done((res) => {
+            if (res.status) {
+            res.text.forEach((v) => {
+                if (v.name === 'smsbalanceapi') {
+                fn(v.value)
+                }
+            })
+            } else {
+            fn(false)
+            }
+        })
+        .fail((err) => {fn(false); console.log(err);} )
         }
 
         var getBalance = (url, fn) => {
-            value = false
-            $.ajax({
-                    url
-                })
-                .done((res) => {
-                    if (res === '-2905') {
-                        value = "Invalid username/password combination"
-                        smsBalanceMessage("Invalid username/password combination")
-                        fn(value)
-                    } else {
-                        value = res
-                        fn(value)
-                    }
-                })
-                .fail((err) => smsBalanceMessage())
-            return value
+        value = false
+        $.ajax({url})
+        .done((res) => {
+            if (res === '-2905') {
+            value = "Invalid username/password combination"
+            smsBalanceMessage("Invalid username/password combination")
+            fn(value)
+            } else {
+            value = res
+            fn(value)
+            }
+        })
+        .fail((err) => smsBalanceMessage())
+        return value
         }
 
         const smsBalanceMessage = (msg = 'cannot fetch sms unit balance') => {
-            $('#sms_balance_container').html(`<h3>${msg}</h3>`)
+        $('#sms_balance_container').html(`<h3>${msg}</h3>`)
         }
     </script>
     @endsection

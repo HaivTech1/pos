@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Options;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Mail\Messaging\SendMail;
-use App\Notifications\SendMessage;
 use Illuminate\Support\Facades\Mail;
 
 class MessagingController extends Controller
@@ -60,26 +59,12 @@ class MessagingController extends Controller
   
   
         if($smsapi){
-            foreach ($request->to as $to){
 
-                    $message = urlencode($request->message);
-                
-                    $basic  = new \Vonage\Client\Credentials\Basic("b85b9158", "ApNc3v2VpO1f7NNN");
-                    $client = new \Vonage\Client($basic);
-
-                    $response = $client->sms()->send(
-                        new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
-                    );
-                    
-                    $message = $response->current();
-                    
-                    if ($message->getStatus() == 0) {
-                        echo "The message was sent successfully\n";
-                    } else {
-                        echo "The message failed with status: " . $message->getStatus() . "\n";
-                    } 
-            }
-            return response()->json(['status' => true, 'text' => 'The message was sent successfully']);
+            $user->notify(new SendMessage());
+              
+        }
+            
+            return response()->json(['status' => true, 'text' => $result]);
           } else {
             return response()->json(['status' => false, 'text' => 'Sms Api Not Set From Admin Options']);
           }

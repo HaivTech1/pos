@@ -75,7 +75,7 @@
                                     placeholder="type in your message"></textarea>
 
                                 <div class="d-flex justify-content-center flex-wrap mt-5">
-                                    <button id="send-btn" type="submit"
+                                    <button type="submit"
                                         class="btn btn-primary block waves-effect waves-light pull-right">Send
                                         Message</button>
                                 </div>
@@ -382,6 +382,72 @@
                 $.each(val, function (i, item) {});
             });
 
+            //add group function
+            $('#add-group').click(function () {
+                //remove attribute on click
+                $('#groups-selector').find(":selected").removeAttr("selected");
+                var items = $('#groups-selector').find(":selected").map(function () {
+                    return this.text;
+                }).get();
+                //do nothing if empty
+                if (items.length == 0) {
+                    return;
+                }
+                //transfer the groups
+                var values = {
+                    'group': items,
+                    '_token': '{{ csrf_token() }}'
+                };
+                //get list of members in each group
+                $.ajax({
+                        type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                        url: "", // the url where we want to POST
+                        data: values, // our data object
+                        dataType: 'json', // what type of data do we expect back from the server
+                        encode: true
+                    }) //<optgroup label="filter2">
+                    // using the done promise callback
+                    .done(function (data) {
+                        if (data.status) {
+                            let itemss = data.groupMember;
+                            //append list to the emails
+                            $.each(itemss, function (i, items) {
+                                $('#num-selector').append($('<optgroup label="' + i +
+                                    '"></optgroup>'));
+                                $.each(items, function (ii, item) {
+                                    //check if already in list
+                                    let options = $("#num-selector option[value='" +
+                                        item.phone +
+                                        "'], #num-selector optgroup[value='" +
+                                        item.phone + "']");
+                                    if (options.length > 0) {
+                                        $.each(options, function () {
+                                            //delete email options
+                                            $(this).remove();
+                                        });
+                                    }
+                                    $('#num-selector optgroup[label="' + i + '"]')
+                                        .append($('<option>', {
+                                            value: item.phone,
+                                            text: item.firstname + ' ' +
+                                                item.lastname + ' - ' + item
+                                                .phone,
+                                            selected: 'selected'
+                                        }, '</option>'));
+                                });
+                            });
+                        } else {
+                            alert('Error occured Please try again');
+                        }
+                        //clear the selectpicker
+                        $('#groups-selector').find(":selected").removeAttr("selected");
+                        $('#groups-selector').selectpicker('deselectAll');
+                        $('#groups-selector').selectpicker('refresh');
+                        $('#num-selector').selectpicker('refresh');
+                        alert('Group Members Added');
+                    });
+            });
+
             // set the balance
             setBalance()
 
@@ -439,7 +505,7 @@
 
         var getSmsBalanceApi = async (fn) => {
             let value = false
-            $.get("{{route('option.branch.get')}}")
+            $.get("")
                 .done((res) => {
                     if (res.status) {
                         res.text.forEach((v) => {
