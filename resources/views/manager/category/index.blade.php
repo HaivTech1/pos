@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', application('name')." | Users Page")
+    @section('title', application('name')." | Category")
 
     <x-slot name="header">
         <h4 class="mb-sm-0 font-size-18">Category</h4>

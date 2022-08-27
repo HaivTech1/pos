@@ -22,6 +22,8 @@
 <script src="{{ asset('js/app.min.js') }}"></script>
 <script src="{{ asset('js/toastr.min.js') }}"></script>
 <script src="{{ asset('js/notiflix.js') }}"></script>
+<!-- Sweet Alerts js -->
+<script src="{{ asset('libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
 <!-- Required datatable js -->
 <script src="{{ asset('libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -57,6 +59,7 @@
 <script src="{{ asset('libs/bootstrap-select/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('js/summernote.min.js')}}"></script>
 
+<script src="{{ asset('js/functions.js') }}"></script>
 
 <script type="text/javascript">
     window.addEventListener('receipt', event => {
@@ -67,7 +70,7 @@
 <script>
     //print section
         function PrintReceiptContent(el){
-            var data = '<input type="button" id="printPageButton class="printPageButton" style="display: block; width: 100%; border:none; background-color: #008B8B; color: #fff; padding: 14px 28px; font-size: 16px; cursor:pointer; text-align: center" value="Print Receipt" onClick="window.print()">';
+            var data = '<input type="button" id="printPageButton class="printPageButton d-print-none" style="display: block; width: 100%; border:none; background-color: #008B8B; color: #fff; padding: 14px 28px; font-size: 16px; cursor:pointer; text-align: center" value="Print Receipt" onClick="window.print()">';
 
             data += document.getElementById(el).innerHTML;
             myReceipt = window.open("", "myWin", "left=150, top=130, width=400, height=400");

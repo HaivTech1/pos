@@ -35,7 +35,9 @@
                                             @endforeach
                                         </optgroup>
                                         <optgroup label="Select Supplier">
-                                            <option value="AL">Alabama</option>
+                                            @foreach ($suppliers as $supplier)
+                                            <option value="{{ $supplier->email() }}">{{ $supplier->title() }}</option>
+                                            @endforeach
                                         </optgroup>
                                     </select>
                                 </div>

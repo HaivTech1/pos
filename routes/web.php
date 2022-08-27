@@ -9,6 +9,7 @@ use App\Http\Controllers\PrintController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessagingController;
 use App\Http\Controllers\ApplicationController;
@@ -65,6 +66,11 @@ Route::middleware([
         Route::post('/options/branch/put', [OptionsController::class, 'putBranchOption'])->name('branch.post');
     });
 
+    Route::group(['prefix' => 'supplier', 'as' => 'supplier.'], function () {
+        Route::get('/', [SupplierController::class, 'index'])->name('index');
+        Route::post('/', [SupplierController::class, 'store'])->name('store');
+    });
+
     Route::get('/get/banks', [OptionsController::class, 'banks'])->name('banks');
 
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
@@ -98,8 +104,8 @@ Route::middleware([
     Route::get('print/test', [PrintController::class, 'test'])->name('print');
 
      // PAYMENT
-     Route::resource('/payments', PaymentController::class);
-     Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
-     Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback']);
-     Route::get('/payment/status', [PaymentController::class, 'status']);
+    Route::resource('/payments', PaymentController::class);
+    Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
+    Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallback']);
+    Route::get('/payment/status', [PaymentController::class, 'status']);
 });

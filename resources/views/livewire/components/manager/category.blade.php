@@ -80,7 +80,7 @@
                             <form wire:submit.prevent="createCategory">
                                 <div class="hstack gap-3">
                                     <input class="form-control me-auto" wire:model.defer="name"
-                                        placeholder="Add your class here..." aria-label="Add your category here...">
+                                        placeholder="Add your category here..." aria-label="Add your category here...">
                                     <x-form.error for="title" />
                                     <button type="submit" class="btn btn-secondary">Add</button>
                                     <div class="vr"></div>

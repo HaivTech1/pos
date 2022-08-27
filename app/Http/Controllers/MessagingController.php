@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Options;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Mail\Messaging\SendMail;
 use App\Notifications\SendMessage;
@@ -19,7 +20,8 @@ class MessagingController extends Controller
     
     public function indexEmail(){
         return view('manager.messaging.email',[
-            'users' => User::where('type' ,'!=', 3)->get()
+            'users' => User::where('type' ,'!=', 3)->get(),
+            'suppliers' => Supplier::all()
         ]);
     }
 
@@ -54,32 +56,40 @@ class MessagingController extends Controller
         $user = \Auth::user();
           //print_r($_POST);exit();
           $result = array('pass' => array('status' => [], 'count' => 0), 'fail' => array('status' => [], 'count' => 0, 'numbers' => []), 'total' => sizeof($request->to));
-          $sender = config('app.name');
+          $sender = application('name');
           $smsapi = Options::getOneBranchOption('smsapi', $user);
-        //   dd($smsapi);
+          $smsbalanceapi = Options::getOneBranchOption('smsbalanceapi', $user);
+        //   dd($smsapi->value);
   
-  
+          
         if($smsapi){
             foreach ($request->to as $to){
 
+                // dd($to);
                     $message = urlencode($request->message);
                 
-                    $basic  = new \Vonage\Client\Credentials\Basic("b85b9158", "ApNc3v2VpO1f7NNN");
+                    $basic  = new \Vonage\Client\Credentials\Basic($smsapi->value." ", "".$smsbalanceapi->value);
                     $client = new \Vonage\Client($basic);
 
-                    $response = $client->sms()->send(
-                        new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
-                    );
+                    // $response = $client->sms()->send(
+                    //     new \Vonage\SMS\Message\SMS($to." ", BRAND_NAME, $message)
+                    // );
+
+                    $text = new \Vonage\SMS\Message\SMS($to, $sender, $message);
+                    $text->setClientRef('test-message');
+                    $response = $client->sms()->send($text);
+                    $data = $response->current();
+                    // $data->getRemainingBalance();
                     
-                    $message = $response->current();
+                    // $message = $response->current();
                     
-                    if ($message->getStatus() == 0) {
-                        echo "The message was sent successfully\n";
-                    } else {
-                        echo "The message failed with status: " . $message->getStatus() . "\n";
-                    } 
+                    // if ($message->getStatus() == 0) {
+                    //     echo "The message was sent successfully\n";
+                    // } else {
+                    //     echo "The message failed with status: " . $message->getStatus() . "\n";
+                    // } 
             }
-            return response()->json(['status' => true, 'text' => 'The message was sent successfully']);
+            return response()->json(['status' => true, 'text' => 'The message was sent successfully Your balance is ' . $data->getRemainingBalance()]);
           } else {
             return response()->json(['status' => false, 'text' => 'Sms Api Not Set From Admin Options']);
           }
